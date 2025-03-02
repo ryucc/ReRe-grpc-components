@@ -1,0 +1,96 @@
+plugins {
+    id 'java'
+    id 'jacoco'
+    id 'java-library'
+    id 'maven-publish'
+    id 'signing'
+}
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+
+compileJava {
+    sourceCompatibility = '8'
+    targetCompatibility = '8'
+}
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+group = 'io.github.ryucc'
+version = '0.0.4'
+
+
+javadoc {
+    if(JavaVersion.current().isJava9Compatible()) {
+        options.addBooleanOption('html5', true)
+    }
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId = 'ReRe-grpc-components'
+            from components.java
+            versionMapping {
+                usage('java-api') {
+                    fromResolutionOf('runtimeClasspath')
+                }
+                usage('java-runtime') {
+                    fromResolutionResult()
+                }
+            }
+            pom {
+                name = 'ReRe-grpc-components-0.0.4'
+                description = 'A concise description of my library'
+                url = 'https://github.com/ryucc/ReRe-grpc-components'
+                licenses {
+                    license {
+                        name = 'The MIT License'
+                        url = 'https://mit-license.org'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'ryucc'
+                        name = 'Kurtis Liu'
+                        email = 'shortyliu@gmail.com'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:git://github.com/ryucc/ReRe-grpc-components.git'
+                    developerConnection = 'scm:git:ssh://github.com:ryucc/ReRe-grpc-components.git'
+                    url = 'https://github.com/ryucc/ReRe-grpc-components'
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            // change URLs to point to your repos, e.g. http://my.org/repo
+            def releasesRepoUrl = layout.buildDirectory.dir('repos/releases')
+            def snapshotsRepoUrl = layout.buildDirectory.dir('repos/snapshots')
+            url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+        }
+    }
+}
+
+def grpcVersion = '1.70.0' // CURRENT_GRPC_VERSION
+
+dependencies {
+    implementation group: 'io.github.ryucc', name: 'ReRe', version: '0.0.4'
+    testImplementation platform('org.junit:junit-bom:5.9.1')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+
+    implementation "io.grpc:grpc-protobuf:${grpcVersion}"
+    implementation "io.grpc:grpc-services:${grpcVersion}"
+    implementation "io.grpc:grpc-stub:${grpcVersion}"
+}
+
+test {
+    useJUnitPlatform()
+}

@@ -11,6 +11,7 @@
 package org.rere.external.grpc.serializers;
 
 import io.grpc.Metadata;
+import io.grpc.Status;
 import org.rere.core.serde.PrimitiveSerde;
 import org.rere.core.serde.ReReSerde;
 import org.rere.core.serde.exceptions.SerializationException;
@@ -31,6 +32,10 @@ public class MetadataSerde implements ReReSerde {
         public String parseAsciiString(String s) {
             return s;
         }
+    }
+    @Override
+    public boolean accept(Class<?> clazz) {
+        return Metadata.class.isAssignableFrom(clazz);
     }
 
     public String serialize(Object object) throws SerializationException {

@@ -22,7 +22,7 @@ repositories {
 }
 
 group = 'io.github.ryucc'
-version = '0.0.6'
+version = '0.0.8'
 
 
 javadoc {
@@ -82,7 +82,7 @@ publishing {
 def grpcVersion = '1.70.0' // CURRENT_GRPC_VERSION
 
 dependencies {
-    implementation group: 'io.github.ryucc', name: 'ReRe', version: '0.0.5'
+    implementation group: 'io.github.ryucc', name: 'ReRe', version: '0.0.8'
     testImplementation platform('org.junit:junit-bom:5.9.1')
     testImplementation 'org.junit.jupiter:junit-jupiter'
 

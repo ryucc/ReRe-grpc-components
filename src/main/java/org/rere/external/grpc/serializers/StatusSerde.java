@@ -33,6 +33,10 @@ public class StatusSerde implements ReReSerde {
 
     }
 
+    @Override
+    public boolean accept(Class<?> clazz) {
+        return Status.class.isAssignableFrom(clazz);
+    }
     public Object deserialize(String serialization) {
         StatusWrap wrap = (StatusWrap) ps.deserialize(serialization);
         return Status.fromCode(wrap.code).withCause(wrap.cause).withDescription(wrap.description);
